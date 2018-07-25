@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["storyfeet <thebeaky@psmail.net>"]
 repository = "https://github.com/storyfeet/card_deck"
 license = "mit"
+description = "A Generic Deck of Cards, with a draw and discard pile"
 
 [dependencies]
 
