@@ -8,4 +8,4 @@ description = "A Generic Deck of Cards, with a draw and discard pile"
 
 [dependencies]
 
-rand = "*"
+rand = "0.5.4"
