@@ -2,6 +2,8 @@
 name = "card_deck"
 version = "0.1.0"
 authors = ["storyfeet <thebeaky@psmail.net>"]
+repository = "https://github.com/storyfeet/card_deck"
+license = "mit"
 
 [dependencies]
 

@@ -41,14 +41,18 @@ impl<C> DeckBuilder<C>{
             stop_on_discards:false,
         }
     }
+    ///Fill the Draw Pile with the supplied vector, consuming it
     pub fn draw_pile(mut self,v:Vec<C>)->Self{
         self.draw_pile = Some(v);
         self
     }
+
+    ///fill the Discard pile with the supplied vector consuming it
     pub fn discard_pile(mut self,v:Vec<C>)->Self{
         self.discard_pile = Some(v);
         self
     }
+
     pub fn pre_shuffle(mut self,b:bool)->Self{
         self.pre_shuffle = b;
         self
@@ -63,8 +67,6 @@ impl<C> DeckBuilder<C>{
         self
     }
             
-            
-
     pub fn done(mut self)->Deck<C>{
         if self.pre_shuffle {
             if let Some(ref mut v) = self.draw_pile {
@@ -96,15 +98,52 @@ impl<C> Deck<C>{
     }
 
     ///Returns None if draw_pile is empty
-    pub fn draw(&mut self)->Option<C>{
-        return self.draw_n(1).next();
+    pub fn draw_1(&mut self)->Option<C>{
+        return self.draw(1).next();
     }
 
-    pub fn draw_n(&mut self,n:usize)->Drain<C>{
-        if n > self.draw_pile.len(){
-            return self.draw_pile.drain(0..)
+    ///Add a card to the discard pile
+    pub fn put_discard(&mut self,card:C){
+        self.discard_pile.push(card);
+    }
+
+    /// Adds the Discard Pile to the bottom of the draw pile, shuffling if shuffle_discards
+    /// ```
+    /// use card_deck::Deck;
+    /// let mut dk = Deck::build()
+    ///             .draw_pile(vec![1,2,3])
+    ///             .discard_pile(vec![4])
+    ///             .stop_on_discards(true).done();
+    ///
+    /// assert_eq!(dk.len(),3);
+    /// assert_eq!(dk.discard_len(),1);
+    /// dk.push_discards();
+    /// assert_eq!(dk.len(),4);
+    /// assert_eq!(dk.discard_len(),0);
+    ///
+    /// ```
+    pub fn push_discards(&mut self){
+        if self.shuffle_discards {
+            rand::thread_rng().shuffle(&mut self.discard_pile);
         }
-        self.draw_pile.drain(0..n)
+        self.draw_pile.append(&mut self.discard_pile);
+    //    self.discard_pile = Vec::new();
+    }
+
+    pub fn draw(&mut self,n:usize)->Drain<C>{
+        if n <= self.draw_pile.len() {
+            return self.draw_pile.drain(0..n);
+        }
+
+        if self.stop_on_discards {
+            return self.draw_pile.drain(0..n);
+        }
+
+        self.push_discards();
+        if n <= self.draw_pile.len(){
+            return self.draw_pile.drain(0..n)
+        }
+        self.draw_pile.drain(0..)
     }
 
     ///returns the maximum number of cards that can be drawn in a single draw
@@ -113,6 +152,13 @@ impl<C> Deck<C>{
             true => self.draw_pile.len(),
             false => self.draw_pile.len() + self.discard_pile.len(),
         }
+    }
+
+    pub fn draw_len(&self)->usize{
+        self.draw_pile.len()
+    }
+    pub fn discard_len(&self)->usize{
+        self.discard_pile.len()
     }
 }
 
@@ -132,7 +178,7 @@ mod tests {
         let mut dk = Deck::build().draw_pile(v).pre_shuffle(false).done();
         assert_eq!(dk.len(),4);
         let mut max = 0;
-        for (k,v) in dk.draw_n(4).enumerate(){
+        for (k,v) in dk.draw(4).enumerate(){
             assert_eq!(v,CTest(k as i32),"Enumerate in order failed");
             max = k;
         }
@@ -147,14 +193,14 @@ mod tests {
         
         assert_eq!(dk.len(),5);
 
-        let _ = dk.draw();
+        let _ = dk.draw_1();
         //assert_eq!(c,Some(CTest(3)));
         assert_eq!(dk.len(),4);
 
-        let _ = dk.draw_n(2);
+        let _ = dk.draw(2);
 
         assert_eq!(dk.len(),2);
-        for (k,c) in dk.draw_n(5).enumerate(){
+        for (k,c) in dk.draw(5).enumerate(){
             if k == 2 {
                 panic!("Drew a third card {:?}", c);
             }
