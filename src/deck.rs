@@ -112,14 +112,14 @@ impl<C> Deck<C>{
     ///
     /// assert_eq!(dk.len(),3);
     /// assert_eq!(dk.discard_len(),1);
-    /// dk.push_discards();
+    /// dk.discards_to_bottom();
     /// assert_eq!(dk.len(),4);
     /// assert_eq!(dk.discard_len(),0);
     ///
     /// assert_eq!(dk.draw_all().last(),Some(4));
     ///
     /// ```
-    pub fn push_discards(&mut self){
+    pub fn discards_to_bottom(&mut self){
         if self.shuffle_discards {
             rand::thread_rng().shuffle(&mut self.discard_pile);
         }
@@ -141,7 +141,7 @@ impl<C> Deck<C>{
             return self.draw_pile.drain(0..n);
         }
 
-        self.push_discards();
+        self.discards_to_bottom();
         if n <= self.draw_pile.len(){
             return self.draw_pile.drain(0..n)
         }
@@ -150,7 +150,7 @@ impl<C> Deck<C>{
 
     pub fn draw_all(&mut self)->Drain<C>{
         if ! self.stop_on_discards {
-            self.push_discards();
+            self.discards_to_bottom();
         }
         self.draw_pile.drain(0..)
     }
@@ -168,6 +168,22 @@ impl<C> Deck<C>{
     }
     pub fn discard_len(&self)->usize{
         self.discard_pile.len()
+    }
+
+    pub fn push_bottom(&mut self,c:C){
+        self.draw_pile.push(c);
+    }
+
+    pub fn push_top(&mut self,c:C){
+        self.discard_pile.insert(0,c);
+    }
+
+    pub fn push_discards(&mut self,c:C){
+        self.discard_pile.push(c);
+    }
+  
+    pub fn push_discards_top(&mut self,c:C){
+        self.discard_pile.insert(0,c);
     }
 }
 

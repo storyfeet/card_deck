@@ -1,6 +1,6 @@
 [package]
 name = "card_deck"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["storyfeet <thebeaky@psmail.net>"]
 repository = "https://github.com/storyfeet/card_deck"
 license = "MIT"
