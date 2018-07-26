@@ -127,6 +127,10 @@ impl<C> Deck<C>{
     //    self.discard_pile = Vec::new();
     }
 
+    pub fn shuffle_draw_pile(&mut self){
+        rand::thread_rng().shuffle(&mut self.discard_pile);
+    }
+
     ///Returns None if nothing to draw 
     pub fn draw_1(&mut self)->Option<C>{
         return self.draw(1).next();
