@@ -128,7 +128,7 @@ impl<C> Deck<C>{
     }
 
     pub fn shuffle_draw_pile(&mut self){
-        rand::thread_rng().shuffle(&mut self.discard_pile);
+        rand::thread_rng().shuffle(&mut self.draw_pile);
     }
 
     ///Returns None if nothing to draw 
