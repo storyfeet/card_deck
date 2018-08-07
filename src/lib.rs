@@ -63,4 +63,13 @@ mod tests {
         assert_eq!(dk.len(),0);
 
     }
+    #[test]
+    fn test_dig(){
+        let v = vec![CTest(0),CTest(1),CTest(2),CTest(3)];
+        let mut dk = Deck::build().draw_pile(v).pre_shuffle(false).done();
+        assert_eq!(dk.dig_for(|c|c == &CTest(1)),Some(CTest(1)));
+        assert_eq!(dk.dig_for(|c|c == &CTest(4)),None);
+        assert_eq!(dk.len(),3);
+        
+    }
 }

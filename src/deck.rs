@@ -190,6 +190,38 @@ impl<C> Deck<C>{
     pub fn push_discards_top(&mut self,c:C){
         self.discard_pile.insert(0,c);
     }
+
+    pub fn dig_for<F>(&mut self,mut f:F)->Option<C>
+        where F:FnMut(&C)->bool
+    {
+        for i in 0..self.draw_pile.len() {
+            if f(&self.draw_pile[i]){
+                return Some(self.draw_pile.remove(i));
+            }
+        }
+        None
+    }
+}
+
+impl <C:Clone> for Deck<C>{
+
+    pub fn dig_all<F>&mut self,mut f:F)->std::vec::IntoIter<C>
+        where F:FnMut(&C)->bool
+    {
+        res_vec = Vec::new();
+        drop_back = 0;
+        for i in 0..self.draw_pile.len(){
+            if f(&self.draw_pile[i]){ 
+                res_vec.push(self.draw_pile[i].clone());
+            }else {
+                if drop_back > 0{
+                    
+                }
+            }
+        }
+        
+    }
+
 }
 
 /// Peeking cards
@@ -251,3 +283,5 @@ impl<'a, C> IntoIterator for &'a mut Deck<C>{
         }
     }
 }
+
+
