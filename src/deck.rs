@@ -201,28 +201,26 @@ impl<C> Deck<C>{
         }
         None
     }
-}
 
-impl <C:Clone> for Deck<C>{
-
-    pub fn dig_all<F>&mut self,mut f:F)->std::vec::IntoIter<C>
+    ///Currently slow, as for each found element has to do slow remove,
+    ///When drain_filter is off nightly will be fixed to use that.
+    ///Dont rely on this returning an IntoIter, but expect an Iterator of some form
+    pub fn dig_all<F>(&mut self,mut f:F)->std::vec::IntoIter<C>
         where F:FnMut(&C)->bool
-    {
-        res_vec = Vec::new();
-        drop_back = 0;
-        for i in 0..self.draw_pile.len(){
-            if f(&self.draw_pile[i]){ 
-                res_vec.push(self.draw_pile[i].clone());
-            }else {
-                if drop_back > 0{
-                    
-                }
+    {     
+        let mut i = 0;
+        let mut r_vec = Vec::new();
+        while i < self.draw_pile.len(){
+            if f(&self.draw_pile[i]){
+                r_vec.push(self.draw_pile.remove(i));
+            }else{
+                i+=1;
             }
         }
-        
+        r_vec.into_iter()
     }
-
 }
+
 
 /// Peeking cards
 /// ```

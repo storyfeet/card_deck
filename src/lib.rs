@@ -72,4 +72,21 @@ mod tests {
         assert_eq!(dk.len(),3);
         
     }
+
+    #[test]
+    fn test_dig_all(){
+        let v = vec![0,1,2,3,4,5,6,7];
+        let mut dk = Deck::build().draw_pile(v).pre_shuffle(false).done();
+        let mut adder = 0;
+        for c in dk.dig_all(|n| n %2 != 0) {
+            adder += c; 
+        }
+        assert_eq!(dk.len(),4);
+        assert_eq!(adder,16);
+        
+        let dr:Vec<u32> = dk.draw_all().collect();
+        assert_eq!(vec![0,4,4,6], dr);
+
+
+    }
 }
