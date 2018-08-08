@@ -85,7 +85,7 @@ mod tests {
         assert_eq!(adder,16);
         
         let dr:Vec<u32> = dk.draw_all().collect();
-        assert_eq!(vec![0,4,4,6], dr);
+        assert_eq!(vec![0,2,4,6], dr);
 
 
     }
