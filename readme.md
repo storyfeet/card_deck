@@ -6,9 +6,13 @@ The expectation is that cards will moved into and out of the deck, copy and clon
 
 ## Coming soon: 
 
-A playing cards module that works well with this deck.
+FromStr and Display methods for playing cards module
+
 
 ## Changes
+
+### in v0.1.7
+A playing cards module that works well with this deck.
 
 ### in v0.1.5
 
