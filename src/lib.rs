@@ -1,4 +1,6 @@
-//! Card Deck acts as a draw pile to on any kind of card.
+//! Card Deck acts as a draw and discard pile to on any kind of card.
+//!
+//! **Contributions Welcome**
 //!
 //! It is defined Generically so as not to be limited to anything specific
 //! like standard playing cards.
@@ -15,7 +17,7 @@ extern crate rand;
 pub mod deck;
 pub use deck::Deck;
 
-
+pub mod playing_card;
 
 #[cfg(test)]
 mod tests {
