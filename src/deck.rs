@@ -5,7 +5,7 @@ use std::vec::{Drain};
 use rand::Rng;
 
 ///A Deck of cards
-#[derive(Debug,Clone)]
+#[derive(Debug,Clone,PartialEq)]
 pub struct Deck<C>{
     draw_pile:Vec<C>,
     discard_pile:Vec<C>,
