@@ -15,7 +15,7 @@
 extern crate rand;
 
 pub mod deck;
-pub use deck::Deck;
+pub use deck::{Deck,DeckBuilder};
 
 pub mod playing_card;
 
