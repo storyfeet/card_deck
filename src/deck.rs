@@ -182,12 +182,16 @@ impl<C> Deck<C> {
         self.discard_pile.insert(0, c);
     }
 
-    pub fn push_discards(&mut self, c: C) {
-        self.discard_pile.push(c);
+    pub fn push_discards<I: IntoIterator<Item = C>>(&mut self, i: I) {
+        for c in i {
+            self.discard_pile.push(c);
+        }
     }
 
-    pub fn push_discards_top(&mut self, c: C) {
-        self.discard_pile.insert(0, c);
+    pub fn push_discards_top<I: IntoIterator<Item = C>>(&mut self, i: I) {
+        for c in i {
+            self.discard_pile.insert(0, c);
+        }
     }
 
     pub fn dig_for<F>(&mut self, mut f: F) -> Option<C>

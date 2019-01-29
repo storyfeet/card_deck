@@ -10,9 +10,10 @@ FromStr and Display methods for playing cards module
 
 ## Changes
 
-###in v0.1.8 (So Far)
+###in v0.1.8 
 
 PartialEq on deck
+push_discards now takes an iterator
 
 
 ### in v0.1.7
